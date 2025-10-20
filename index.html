@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Chúc mừng 20/10 💖 Hương</title>
+<style>
+:root {
+  --accent:#ff4da6;
+  --accent2:#ff80c0;
+  --dark-bg:#0b0b13;
+  --glow: 0 0 20px var(--accent2), 0 0 40px var(--accent);
+  font-family:'Poppins',sans-serif;
+}
+html,body {
+  height:100%;margin:0;
+  background: radial-gradient(circle at 50% 20%, #1a1a25, var(--dark-bg) 90%);
+  overflow:hidden;
+  color:white;
+}
+.card {
+  text-align:center;
+  padding:40px 20px;
+  position:relative;
+  z-index:2;
+}
+h1 {
+  color:var(--accent2);
+  font-size:40px;
+  animation: glow 2s ease-in-out infinite alternate;
+}
+@keyframes glow {
+  from{text-shadow:0 0 8px var(--accent);}
+  to{text-shadow:0 0 20px var(--accent2),0 0 40px var(--accent2);}
+}
+.name {
+  font-size:50px;
+  color:white;
+  margin:20px 0 10px;
+  text-shadow:0 0 15px var(--accent2);
+  animation: float 4s ease-in-out infinite;
+}
+@keyframes float {
+  0%,100%{transform:translateY(0)}
+  50%{transform:translateY(-10px)}
+}
+.msg {
+  font-size:18px;
+  color:#e6e6e6;
+  max-width:600px;
+  margin:0 auto 20px;
+  animation: fadein 3s ease;
+}
+@keyframes fadein {
+  from{opacity:0}
+  to{opacity:1}
+}
+.photo {
+  width:220px;height:220px;
+  margin:20px auto;
+  border-radius:50%;
+  overflow:hidden;
+  border:4px solid var(--accent2);
+  box-shadow:0 0 30px var(--accent2);
+  position:relative;
+  animation: pulse 3s ease-in-out infinite;
+}
+@keyframes pulse {
+  0%,100%{box-shadow:0 0 20px var(--accent2);}
+  50%{box-shadow:0 0 60px var(--accent2);}
+}
+.photo img {width:100%;height:100%;object-fit:cover;}
+
+button {
+  border:none;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  color:white;
+  font-size:16px;
+  font-weight:600;
+  padding:12px 24px;
+  border-radius:30px;
+  cursor:pointer;
+  box-shadow:0 0 20px var(--accent2);
+  transition:transform .2s;
+  margin:10px;
+}
+button:hover {transform:scale(1.1);}
+button:active {transform:scale(0.95);}
+
+canvas#confetti,canvas#hearts,canvas#fireworks {
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:1;
+}
+
+/* 🌈 Hiệu ứng chữ “Đồ Xinh Đẹp” */
+.big-text {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) scale(0);
+  font-size: 80px;
+  font-weight: bold;
+  text-transform: uppercase;
+  background: linear-gradient(90deg, red, orange, yellow, green, cyan, blue, violet);
+  -webkit-background-clip: text;
+  color: transparent;
+  text-align: center;
+  text-shadow: 0 0 40px white;
+  animation: none;
+  opacity: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+@keyframes popInFade {
+  0% {transform:translate(-50%, -50%) scale(0);opacity:0;}
+  20% {transform:translate(-50%, -50%) scale(1.2);opacity:1;}
+  70% {transform:translate(-50%, -50%) scale(1);opacity:1;}
+  100% {transform:translate(-50%, -50%) scale(1.3);opacity:0;}
+}
+@keyframes rainbow {
+  0% {filter: hue-rotate(0deg);}
+  100% {filter: hue-rotate(360deg);}
+}
+</style>
+</head>
+<body>
+  <canvas id="confetti"></canvas>
+  <canvas id="hearts"></canvas>
+  <canvas id="fireworks"></canvas>
+
+  <div class="card">
+    <h1>Chúc mừng Ngày Phụ Nữ Việt Nam 20/10 💐</h1>
+    <div class="photo"><img src="Hương.jpg" alt="Hương"></div>
+    <div class="name">Nguyễn Thu Hương</div>
+    <div class="msg">
+      <p>Chúc bạn luôn rạng rỡ như vì sao trong đêm tối ✨</p>
+      <p>Mong mỗi ngày của bạn đều tràn đầy tiếng cười, hạnh phúc và tình yêu 💖</p>
+      <p>Hãy nhớ rằng bạn luôn được lắng nghe, ủng hộ và yêu thương 🌸</p>
+      <p>Chúc bạn một ngày 20/10 thật vui vẻ và ý nghĩa! 🌹</p>
+    </div>
+    <button id="celebrate">Bắn Pháo Hoa 🎆</button>
+    <button id="showText">Hiện Dòng Chữ Bí Mật 💞</button>
+  </div>
+
+  <div class="big-text" id="bigText">Đồ Xinh Đẹp</div>
+
+<script>
+// 🎉 Confetti animation
+(function(){
+  const canvas=document.getElementById('confetti'),ctx=canvas.getContext('2d');
+  let W,H,parts=[];
+  function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight;}
+  resize();addEventListener('resize',resize);
+  function random(a,b){return Math.random()*(b-a)+a;}
+  for(let i=0;i<150;i++){
+    parts.push({x:random(0,W),y:random(-H,0),r:random(3,7),c:`hsl(${random(300,340)},100%,70%)`,vy:random(2,5),vx:random(-2,2)});
+  }
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    for(const p of parts){
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,2*Math.PI);
+      ctx.fillStyle=p.c;ctx.fill();
+      p.x+=p.vx;p.y+=p.vy;if(p.y>H)p.y=random(-20,0);
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+})();
+
+// 💗 Floating hearts
+(function(){
+  const canvas=document.getElementById('hearts'),ctx=canvas.getContext('2d');
+  let W,H;function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight;}resize();addEventListener('resize',resize);
+  const hearts=[];
+  function drawHeart(x,y,s,c){
+    ctx.save();ctx.translate(x,y);ctx.scale(s,s);
+    ctx.beginPath();
+    ctx.moveTo(0,0);
+    ctx.bezierCurveTo(-2,-2,-4,1,0,4);
+    ctx.bezierCurveTo(4,1,2,-2,0,0);
+    ctx.closePath();
+    ctx.fillStyle=c;ctx.fill();ctx.restore();
+  }
+  function spawn(){
+    if(hearts.length<60){
+      hearts.push({x:Math.random()*W,y:H+20,v:1+Math.random()*1.5,s:0.8+Math.random()*1.2,c:`rgba(255,${100+Math.random()*100},${150+Math.random()*100},0.7)`});
+    }
+  }
+  function render(){
+    ctx.clearRect(0,0,W,H);
+    for(const h of hearts){
+      drawHeart(h.x,h.y,h.s,h.c);
+      h.y-=h.v;h.x+=Math.sin(h.y/20);
+    }
+    for(let i=hearts.length-1;i>=0;i--)if(hearts[i].y<-10)hearts.splice(i,1);
+    spawn();
+    requestAnimationFrame(render);
+  }
+  render();
+})();
+
+// 🎇 Fireworks button
+(function(){
+  const canvas=document.getElementById('fireworks'),ctx=canvas.getContext('2d');
+  let W,H;function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight;}resize();addEventListener('resize',resize);
+  const fireworks=[];
+  class Particle{
+    constructor(x,y,c,vy,vx){this.x=x;this.y=y;this.vy=vy;this.vx=vx;this.life=100;this.c=c;}
+    update(){this.x+=this.vx;this.y+=this.vy;this.vy+=0.05;this.life-=1;}
+    draw(){ctx.fillStyle=this.c;ctx.fillRect(this.x,this.y,2,2);}
+  }
+  document.getElementById('celebrate').addEventListener('click',()=>{
+    for(let i=0;i<5;i++)makeFirework();
+  });
+  function makeFirework(){
+    const x=Math.random()*W,y=Math.random()*H/2;
+    for(let i=0;i<100;i++){
+      const angle=Math.random()*Math.PI*2,speed=Math.random()*4;
+      fireworks.push(new Particle(x,y,`hsl(${Math.random()*360},100%,60%)`,Math.sin(angle)*speed,Math.cos(angle)*speed));
+    }
+  }
+  function loop(){
+    ctx.fillStyle="rgba(0,0,0,0.2)";
+    ctx.fillRect(0,0,W,H);
+    for(let i=fireworks.length-1;i>=0;i--){
+      const p=fireworks[i];
+      p.update();p.draw();
+      if(p.life<=0)fireworks.splice(i,1);
+    }
+    requestAnimationFrame(loop);
+  }
+  loop();
+})();
+
+// 🌈 Hiện “Đồ Xinh Đẹp”
+const showBtn=document.getElementById('showText');
+const bigText=document.getElementById('bigText');
+showBtn.addEventListener('click',()=>{
+  bigText.style.animation='none';
+  void bigText.offsetWidth; // reset animation
+  bigText.style.animation='popInFade 3.5s ease-out forwards, rainbow 2s linear infinite';
+});
+</script>
+</body>
+</html>
